@@ -16,6 +16,7 @@ apt update && apt install -y wget && wget -qO- https://raw.githubusercontent.com
 sed -i 's/user=kali/user=xiv3r/' /etc/bash.bashrc && source /etc/bash.bashrc
 ```
 <img src="https://github.com/xiv3r/proot-distro-kali/blob/main/files/kalinh.png">
+
 ## Uninstall
 ```sh
 proot-distro remove kali
