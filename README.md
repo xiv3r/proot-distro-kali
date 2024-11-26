@@ -1,10 +1,8 @@
 # Auto install
+> auto launch kali in every start-up
+> cli by default
 ```sh
 apt update && apt upgrade -y && pkg install wget -y && echo "clear && proot-distro login kali" >> $PREFIX/etc/bash.bashrc && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/setup.sh | sh && proot-distro login kali
-```
-- CLI Only
-```sh
-apt update && apt install -y wget && wget -O /etc/bash.bashrc https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/bash.bashrc && source /etc/bash.bashrc
 ```
 - CLI & VNC (optional)
 ```sh
