@@ -6,7 +6,7 @@ apt update && apt upgrade -y && pkg install wget -y && echo "clear && proot-dist
 ```sh
 apt update && apt install -y wget && wget -O /etc/bash.bashrc https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/bash.bashrc && source /etc/bash.bashrc
 ```
-- CLI & VNC
+- CLI & VNC (optional)
 ```sh
 apt update && apt install -y wget && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/xfce.sh | sh
 ```
