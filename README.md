@@ -7,7 +7,11 @@ apt update && apt upgrade -y && pkg install wget -y && echo "clear && proot-dist
 ```sh
 apt update && apt -y full-upgrade
 ```
-
+## Add custom terminal name
+> replace the name `xiv3r` to your name
+```sh
+sed -i 's/user=kali/user=xiv3r/' .zshrc && source .zshrc
+```
 ## Uninstall
 ```sh
 proot-distro remove kali
