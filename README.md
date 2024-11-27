@@ -5,7 +5,11 @@
 apt update && apt upgrade -y && pkg install wget -y && echo "clear && proot-distro login kali" >> $PREFIX/etc/bash.bashrc && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/setup.sh | sh && proot-distro login kali
 ```
 ```sh
-apt update && apt install wget -y && wget -O .zshrc https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/.zshrc && source .zshrc && apt full-upgrade -y
+apt update && apt install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh | sh
+```
+> Upgrade Kali
+```sh
+apt full-upgrade -y
 ```
 ## Add custom terminal name
 > replace the name `xiv3r` to your name
