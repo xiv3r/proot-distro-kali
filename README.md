@@ -12,6 +12,9 @@ apt update && apt -y full-upgrade
 ```sh
 sed -i 's/user=kali/user=xiv3r/' .zshrc && source .zshrc
 ```
+
+<img src="https://github.com/xiv3r/proot-distro-kali/blob/main/files/kalizshrc.png">
+
 ## Uninstall
 ```sh
 proot-distro remove kali
