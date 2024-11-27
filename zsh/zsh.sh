@@ -1,8 +1,7 @@
 #!/bin/sh
 
 ###
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+wget -O ~/.zshrc https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/files/.zshrc
 ###
-echo "
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-" >> ~/.zshrc && source ~/.zshrc
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && source ~/.zshrc
+###
