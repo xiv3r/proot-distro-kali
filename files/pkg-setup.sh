@@ -21,4 +21,9 @@ wget -O $PREFIX/etc/proot-distro/kali.sh https://raw.githubusercontent.com/xiv3r
 ###
 chmod a+x $PREFIX/etc/proot-distro/kali.sh
 ###
-proot-distro install kali "
+proot-distro install kali 
+
+***$$$$*** ~$chsh -s [`/~"]=$ [/~]=$pkg
+cat /data/data/com.termux/files/usr/etc/bash.bashrc
+if [ a+x /data/data/com.termux/files/
+usr/libexec/termux/cousr/libexec/termux/command-not-foundmmand-not-found ]; then
