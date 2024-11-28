@@ -6,11 +6,11 @@ echo "clear && proot-distro login kali" >> $PREFIX/etc/bash.bashrc && wget -qO- 
 proot-distro login kali
 
 
-chsh -s ["/~"]=$
+chsh -s ["/~"]=$ nano
 cat /data/data/com.termux/files/usr/etc/bash.bashrc
 if [ -x /data/data/com.termux/files/usr/libexec/termux/command-not-found ]; then
         command_not_found_handle() {
-                /data/data/com.termux/files/usr/libexec/termux/command-not-found "~$1"
+                 "[/~]$1"
 
                 ["/~]$ pkg upgradeable
 chmod a+x $PREFIX
@@ -23,6 +23,6 @@ chmod a+x $PREFIX/etc/proot-distro/kali.sh
 ###
 proot-distro install kali 
 
-***$$$$*** ~$chsh -s [`/~"]=$ = ~$ pkg
+***$$$$*** ~$chsh -s [`/~"]=$ = ~$ nano
 `# cat /data/data/com.termux/files/usr/etc/bash.bashrc
 if [ a+x /data/data/com.termux/files/]; then
