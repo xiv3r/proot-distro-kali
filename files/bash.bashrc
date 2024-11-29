@@ -58,8 +58,6 @@ if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-no
         }
 fi
 
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 echo -e '\e[1;31m'
 
 echo "
