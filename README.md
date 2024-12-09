@@ -16,7 +16,7 @@ apt full-upgrade -y
 ## Add custom terminal name
 > replace the name `xiv3r` to your name
 ```sh
-sed -i 's/user=kali/user=xiv3r/' .zshrc && source .zshrc
+sed -i 's/user=kali/user=anton/' .zshrc && source .zshrc
 ```
 
 <img src="https://github.com/xiv3r/proot-distro-kali/blob/main/files/kalizshrc.png">
