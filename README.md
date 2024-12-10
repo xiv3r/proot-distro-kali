@@ -1,68 +1,45 @@
-# MrChrootBSD
-  This program is a chroot like utility for FreeBSD,which is by far the most sexy BSD available. I like [PRoot](https://proot-me.github.io/) for testing software(on linux) but I am anaware of such a tool for FreeBSD,so I was left in the dust. Meet `MrChrootBSD`,a **non-root version of chroot** sort of.
+# Python Getting Started
 
-# NOTICE
+A barebones Django app, which can easily be deployed to Heroku.
 
-  **This software is going under major refactors including perimision emulation. Expect something juicy next week. Dont use it for anything serious now(or at all).**
+This application supports the tutorials for both the [Cedar and Fir generations](https://devcenter.heroku.com/articles/generations) of the Heroku platform. You can check them out here:
 
+- [Getting Started on Heroku with Python](https://devcenter.heroku.com/articles/getting-started-with-python)
+- [Getting Started on Heroku Fir with Python](https://devcenter.heroku.com/articles/getting-started-with-python-fir)
 
-## Features
-  Here is a list
-- Do chroot in userspace
-- Partial `ptrace` emulation(limited,you can run `gdb` in your MrChroot's sort of and it will make you happy maybe)
-- (Currently) buggy user permisions database(`perms.db` using `db(3)`)
-- X11 within MrChrootBSD easily with the `-X` option.
+## Deploying to Heroku
 
-## Non-Features
-  Some of these will be removed(added to features) in the future
-- Full `ptrace` emulation(Dont rely on `PT_TO_SCE`/`PT_TO_SCX` to work).
-- jails
-- daemons
+Using resources for this example app counts towards your usage. [Delete your app](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-apps-destroy) and [database](https://devcenter.heroku.com/articles/heroku-postgresql#removing-the-add-on) as soon as you are done experimenting to control costs.
 
-## Usage
-This is early in development so stay tuned,use it like a normal chroot. Feel free to probe around the source code and send patches to my github.
+### Deploy on Heroku [Cedar](https://devcenter.heroku.com/articles/generations#cedar)
 
-```sh
-git clone https://github.com/nrootconauto/MrChrootBSD.git
-cd MrChrootBSD
-wget https://download.freebsd.org/releases/amd64/14.1-RELEASE/base.txz
-wget https://download.freebsd.org/releases/amd64/14.1-RELEASE/lib32.txz #Needed for gdb for some reason
-mkdir chroot
-cd ..
-cmake .
-make
-cp /etc/resolv.conf chroot/etc # networking
-./mchroot -t base.txz chroot # Accounts for perms.db database
-./mchroot -t lib32.txz chroot # Accounts for perms.db database
-./mchroot chroot /bin/sh
-# pkg etc
-``` 
+By default, apps use Eco dynos if you are subscribed to Eco. Otherwise, it defaults to Basic dynos. The Eco dynos plan is shared across all Eco dynos in your account and is recommended if you plan on deploying many small apps to Heroku. Learn more about our low-cost plans [here](https://blog.heroku.com/new-low-cost-plans).
 
-### X11 within MrChrootBSD
+Eligible students can apply for platform credits through our new [Heroku for GitHub Students program](https://blog.heroku.com/github-student-developer-program).
 
-  Use `-X` option to allow /var/run and XAUTHORITY to be set so you can run X11 apps.
+```term
+$ git clone https://github.com/heroku/python-getting-started
+$ cd python-getting-started
+$ heroku create
+$ git push heroku main
+$ heroku open
+```
 
-## Things to do after chroot'ing
-### Copy `/etc/resolv.conf` into `/etc`.
-  You'll want to do this for networking
-### passwd root and install daos
-  su wont work for now(if ever). doas works like a charm when configured correctly.
-  ```sh
-  pkg install doas
-  echo 'permit nopass :wheel' > /usr/local/etc/doas.conf
-  adduser -Z
-  ```
-  **MAKE SURE TO USE -Z with adduser TO NOT MAKE A ZFS dataset.**
-## How it works internally
+### Deploy on Heroku [Fir](https://devcenter.heroku.com/articles/generations#fir)
 
-  It uses `ptrace` to intercept the calls and reroute the file names to the *host* filesystem. Certian caeveats such as FreeBSD using the host filesystem for `execvpe` or telling the full path of the executable via `elf_aux_info`  are patched in a `LD_PRELOAD` library called `libpl_hack.so` in `preload_hack.c`.
+By default, apps on [Fir](https://devcenter.heroku.com/articles/generations#fir) use 1X-Classic dynos. To create an app on [Fir](https://devcenter.heroku.com/articles/generations#fir) you'll need to
+[create a private space](https://devcenter.heroku.com/articles/working-with-private-spaces#create-a-private-space)
+first.
 
-## Development Please ;)
-I could use help in these areas,I will probably get them done myself but if you want to make my day:
+```term
+$ git clone https://github.com/heroku/python-getting-started
+$ cd python-getting-started
+$ heroku create --space <space-name>
+$ git push heroku main
+$ heroku ps:wait
+$ heroku open
+```
 
- 1. Add support for `riscv64` and `arm64` in `abi.c`.
- 2. Make the tool extremely fun to use(have emojis and stuff)
- 3. Implement` procctl(3)` reapers.
- 4. Make sure `wait(2)` actually works(probably does)
- 5. Validate existing `sysctl(3)` stuff(Probably works).
- 6. **MAKE A ROBUST WAY TO TEST OF A PATH IS CHROOTED/UNCHROOTED**(like make the paths start with '\01' or '\02')
+For more information about using Python on Heroku, see these Dev Center articles:
+
+- [Python on Heroku](https://devcenter.heroku.com/categories/python)
