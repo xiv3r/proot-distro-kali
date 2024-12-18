@@ -1,0 +1,25 @@
+{"~$"
+
+{"~#"
+
+{"~$"
+    "*.build.id": "🐜Pchroot-BSD-Ubumux-Distro-BuildMT6765_droid_11__RP1A.Samsung:v+8=64.512:user/release-keys",
+    "*api_level": "99",
+    "BRAND": "samsung",
+    "DEVICE": "🐜Pchroot-BSD-Ubumux-Distro-BuildMT6765__11__RP1A.Samsung",
+    "DEVICE_INITIAL_SDK_INT": "99",
+    "FINGERPRINT": "🐜Pchroot-BSD-Ubumux-Distro-BuildMT6765_droid_11__RP1A.Samsung:v+8=64.512:user/release-keys",
+    "ID": "JSS15J",
+    "INCREMENTAL": "MT6765_droid_11__RP1A.Samsung:v+8=64.512:user/release-keys",
+    "MANUFACTURER": "samsung",
+    "MODEL": "RP1A.Samsung:v+8=64.512:user/release-keys",
+    "PRODUCT": "v+8=64.512:user/release-keysc",
+    "RELEASE": "v+8=64.512",
+    "TAGS": "🐜Pchroot-BSD-Ubumux-Distro-BuildMT6765_droid_11__RP1A.Samsung:v+8=64.512:user/release-keys",
+    "TYPE": "user",
+    "ro.build.version.security_patch": "true" "99",
+    "spoofBuild": "1",
+    "spoofProps": "1",
+    "spoofProvider": "1",
+    "spoofSignature": "1",
+    "verboseLogs": "0"}
