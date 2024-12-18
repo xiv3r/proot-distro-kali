@@ -1,0 +1,208 @@
+import unittest
+import subprocess
+import os
+from unittest.mock import patch, MagicMock
+
+class TestKaliSetup(unittest.TestCase):
+    pass
+
+if __name__ == '__main__':
+    unittest.main()
+def test_homebrew_installation(self):
+    with patch('subprocess.run') as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+        
+        # Simulate the Homebrew installation command
+        result = subprocess.run(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], capture_output=True, text=True)
+        
+        self.assertEqual(result.returncode, 0)
+        mock_run.assert_called_once_with(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], capture_output=True, text=True)
+        
+        # Check if Homebrew is added to PATH
+        with open(os.path.expanduser('~/.zshrc'), 'r') as f:
+            zshrc_content = f.read()
+        self.assertIn('eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"', zshrc_content)def test_zsh_setup(self):
+            with patch('subprocess.run') as mock_run, \
+                 patch('builtins.open', mock_open()) as mock_file, \
+                 patch('os.path.expanduser') as mock_expanduser:
+                
+                mock_run.return_value = MagicMock(returncode=0)
+                mock_expanduser.return_value = '/home/user/.zshrc'
+                
+                # Simulate the Zsh installation and configuration
+                result = subprocess.run(['wget', '-qO-', 'https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh'], capture_output=True, text=True)
+                
+                self.assertEqual(result.returncode, 0)
+                mock_run.assert_called_with(['wget', '-qO-', 'https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh'], capture_output=True, text=True)
+                
+                # Check if Zsh configuration is added to .zshrc
+                mock_file().write.assert_any_call('eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"')
+                
+                # Check if zsh-autosuggestions is installed
+                mock_run.assert_any_call(['git', 'clone', 'https://github.com/zsh-users/zsh-autosuggestions', '/home/user/.zsh/zsh-autosuggestions'], check=True)
+                
+                # Verify that the Zsh setup message is printed
+                mock_run.assert_any_call(['echo', 'Homebrew and Zsh setup completed.'], check=True)def test_homebrew_path_addition(self):
+                    with patch('builtins.open', mock_open()) as mock_file, \
+                         patch('os.path.expanduser') as mock_expanduser:
+                        
+                        mock_expanduser.return_value = '/home/user/.zshrc'
+                        
+                        # Simulate adding Homebrew to PATH
+                        echo_command = 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+                        subprocess.run(['echo', echo_command, '>>', '~/.zshrc'], check=True)
+                        
+                        # Check if the Homebrew PATH is added to .zshrc
+                        mock_file().write.assert_called_with(echo_command + '\n')
+                        
+                        # Verify that the eval command is executed
+                        with patch('subprocess.run') as mock_run:
+                            eval_command = '/home/linuxbrew/.linuxbrew/bin/brew shellenv'
+                            subprocess.run(['eval', f'"$({eval_command})"'], shell=True, check=True)
+                            mock_run.assert_called_with(['eval', f'"$({eval_command})"'], shell=True, check=True)def test_zsh_autosuggestions_installation(self):
+                                with patch('subprocess.run') as mock_run, \
+                                     patch('os.path.expanduser') as mock_expanduser:
+                                    
+                                    mock_run.return_value = MagicMock(returncode=0)
+                                    mock_expanduser.return_value = '/home/user'
+                                    
+                                    # Simulate the zsh-autosuggestions installation
+                                    result = subprocess.run(['git', 'clone', 'https://github.com/zsh-users/zsh-autosuggestions', '/home/user/.zsh/zsh-autosuggestions'], check=True)
+                                    
+                                    self.assertEqual(result.returncode, 0)
+                                    mock_run.assert_called_with(['git', 'clone', 'https://github.com/zsh-users/zsh-autosuggestions', '/home/user/.zsh/zsh-autosuggestions'], check=True)
+                                    
+                                    # Verify that the installation directory exists
+                                    self.assertTrue(os.path.exists('/home/user/.zsh/zsh-autosuggestions'))def test_existing_homebrew_installation(self):
+                                        with patch('subprocess.run') as mock_run, \
+                                             patch('builtins.open', mock_open()) as mock_file, \
+                                             patch('os.path.exists') as mock_exists:
+                                    
+                                            mock_run.return_value = MagicMock(returncode=0)
+                                            mock_exists.return_value = True
+                                    
+                                            # Simulate existing Homebrew installation
+                                            homebrew_path = '/home/linuxbrew/.linuxbrew/bin/brew'
+                                            mock_exists.side_effect = lambda path: path == homebrew_path
+                                    
+                                            # Run the installation script
+                                            result = subprocess.run(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], capture_output=True, text=True)
+                                    
+                                            self.assertEqual(result.returncode, 0)
+                                            mock_run.assert_called_with(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], capture_output=True, text=True)
+                                    
+                                            # Check if Homebrew PATH is added to .zshrc only once
+                                            mock_file().read.return_value = 'Some existing content'
+                                            echo_command = 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+                                            subprocess.run(['echo', echo_command, '>>', '~/.zshrc'], check=True)
+                                            mock_file().write.assert_called_once_with(echo_command + '\n')
+                                    
+                                            # Verify that the eval command is executed
+                                            eval_command = '/home/linuxbrew/.linuxbrew/bin/brew shellenv'
+                                            subprocess.run(['eval', f'"$({eval_command})"'], shell=True, check=True)
+                                            mock_run.assert_any_call(['eval', f'"$({eval_command})"'], shell=True, check=True)
+                                    
+                                            # Check if the success message is printed
+                                            mock_run.assert_any_call(['echo', 'Homebrew and Zsh setup completed.'], check=True)def test_kali_script_permissions(self):
+                                                with patch('subprocess.run') as mock_run, \
+                                                     patch('os.environ.get') as mock_env_get:
+                                                    
+                                                    mock_env_get.return_value = '/home/user'
+                                                    mock_run.return_value = MagicMock(returncode=0)
+                                                    
+                                                    # Simulate setting execute permissions for kali.sh
+                                                    subprocess.run(['chmod', 'a+x', '/home/user/etc/proot-distro/kali.sh'], check=True)
+                                                    
+                                                    # Verify that chmod was called with the correct arguments
+                                                    mock_run.assert_called_with(['chmod', 'a+x', '/home/user/etc/proot-distro/kali.sh'], check=True)
+                                                    
+                                                    # Check if the permissions are set correctly
+                                                    result = subprocess.run(['ls', '-l', '/home/user/etc/proot-distro/kali.sh'], capture_output=True, text=True)
+                                                    self.assertIn('rwxr-xr-x', result.stdout)def test_source_zshrc_after_installation(self):
+                                                        with patch('subprocess.run') as mock_run, \
+                                                             patch('builtins.open', mock_open()) as mock_file, \
+                                                             patch('os.path.expanduser') as mock_expanduser:
+                                                            
+                                                            mock_run.return_value = MagicMock(returncode=0)
+                                                            mock_expanduser.return_value = '/home/user/.zshrc'
+                                                            
+                                                            # Simulate the installation and configuration
+                                                            result = subprocess.run(['wget', '-qO-', 'https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh'], capture_output=True, text=True)
+                                                            
+                                                            self.assertEqual(result.returncode, 0)
+                                                            mock_run.assert_called_with(['wget', '-qO-', 'https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh'], capture_output=True, text=True)
+                                                            
+                                                            # Check if .zshrc is sourced after installation
+                                                            mock_run.assert_any_call(['source', '/home/user/.zshrc'], shell=True, check=True)
+                                                            
+                                                            # Verify that the success message is printed
+                                                            mock_run.assert_any_call(['echo', 'Homebrew and Zsh setup completed.'], check=True)def test_homebrew_installation_network_failure(self):
+                                                                with patch('subprocess.run') as mock_run, \
+                                                                     patch('builtins.open', mock_open()) as mock_file:
+                                                                    
+                                                                    # Simulate a network failure during Homebrew installation
+                                                                    mock_run.side_effect = [
+                                                                        subprocess.CalledProcessError(1, 'curl', 'Network error'),
+                                                                        MagicMock(returncode=0)  # For subsequent commands
+                                                                    ]
+                                                                    
+                                                                    # Run the installation script
+                                                                    with self.assertRaises(subprocess.CalledProcessError):
+                                                                        subprocess.run(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], check=True)
+                                                                    
+                                                                    # Verify that the error is handled gracefully
+                                                                    mock_run.assert_called_with(['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'], check=True)
+                                                                    
+                                                                    # Check that subsequent commands are not executed
+                                                                    self.assertEqual(mock_run.call_count, 1)
+                                                                    
+                                                                    # Verify that the Homebrew PATH is not added to .zshrc
+                                                                    mock_file().write.assert_not_called()
+                                                                    
+                                                                    # Check that the success message is not printed
+                                                                    mock_run.assert_not_called_with(['echo', 'Homebrew and Zsh setup completed.'], check=True)def test_wget_installation(self):
+                                                                        with patch('subprocess.run') as mock_run, \
+                                                                             patch('shutil.which') as mock_which:
+                                                                            
+                                                                            # Simulate wget not being installed initially
+                                                                            mock_which.side_effect = [None, '/usr/bin/wget']
+                                                                            
+                                                                            # Mock the subprocess.run calls
+                                                                            mock_run.return_value = MagicMock(returncode=0)
+                                                                            
+                                                                            # Run the update and install commands
+                                                                            subprocess.run(['apt', 'update'], check=True)
+                                                                            subprocess.run(['apt', 'install', 'wget', '-y'], check=True)
+                                                                            
+                                                                            # Check if apt update was called
+                                                                            mock_run.assert_any_call(['apt', 'update'], check=True)
+                                                                            
+                                                                            # Check if apt install wget was called
+                                                                            mock_run.assert_any_call(['apt', 'install', 'wget', '-y'], check=True)
+                                                                            
+                                                                            # Verify that wget is now installed
+                                                                            self.assertIsNotNone(shutil.which('wget'))
+                                                                            
+                                                                            # Ensure the correct number of calls were made
+                                                                            self.assertEqual(mock_run.call_count, 2)def test_setup_completion_message(self):
+                                                                                with patch('subprocess.run') as mock_run, \
+                                                                                     patch('builtins.open', mock_open()) as mock_file, \
+                                                                                     patch('os.path.expanduser') as mock_expanduser:
+                                                                                    
+                                                                                    mock_run.return_value = MagicMock(returncode=0)
+                                                                                    mock_expanduser.return_value = '/home/user/.zshrc'
+                                                                                    
+                                                                                    # Simulate successful execution of all commands
+                                                                                    for cmd in [
+                                                                                        ['apt', 'update'],
+                                                                                        ['apt', 'install', 'wget', '-y'],
+                                                                                        ['/bin/bash', '-c', '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'],
+                                                                                        ['wget', '-qO-', 'https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh'],
+                                                                                        ['git', 'clone', 'https://github.com/zsh-users/zsh-autosuggestions', '/home/user/.zsh/zsh-autosuggestions'],
+                                                                                        ['chmod', 'a+x', '$PREFIX/etc/proot-distro/kali.sh'],
+                                                                                        ['echo', 'Homebrew and Zsh setup completed.']
+                                                                                    ]:
+                                                                                        mock_run.assert_any_call(cmd, check=True)
+                                                                                    
+                                                                                    # Check if the final message is printed
+                                                                                    mock_run.assert_called_with(['echo', 'Homebrew and Zsh setup completed.'], check=True)

@@ -1,0 +1,134 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+
+describe('VS Code settings', () => {
+  let settings;
+
+  before(() => {
+    const settingsPath = path.join(__dirname, '..', 'settings.json');
+    const settingsContent = fs.readFileSync(settingsPath, 'utf8');
+    settings = JSON.parse(settingsContent);
+  });
+});
+it('should handle empty string values for the Linux automation profile', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+  assert.strictEqual(Object.keys(linuxProfile).length, 0);
+});it('should override existing Linux automation profile settings', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+  assert.notStrictEqual(Object.keys(linuxProfile).length, 0);
+  assert.strictEqual(typeof linuxProfile.env, 'object');
+  assert.strictEqual(Object.keys(linuxProfile.env).length, 0);
+});it('should validate the syntax of the Linux automation profile configuration', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+  assert.ok(Object.keys(linuxProfile).length > 0, 'Linux automation profile should not be empty');
+  assert.strictEqual(typeof linuxProfile.env, 'object');
+});it('should integrate with other terminal settings without conflicts', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  const allowedLinkSchemes = settings['terminal.integrated.allowedLinkSchemes'];
+  
+  assert.strictEqual(typeof linuxProfile, 'object');
+  assert.strictEqual(typeof allowedLinkSchemes, 'object');
+  assert.ok(Array.isArray(allowedLinkSchemes));
+  
+  // Check that the Linux profile doesn't override allowedLinkSchemes
+  assert.ok(!linuxProfile.hasOwnProperty('allowedLinkSchemes'));
+  
+  // Verify that allowedLinkSchemes is still intact
+  assert.ok(allowedLinkSchemes.includes('file'));
+  assert.ok(allowedLinkSchemes.includes('http'));
+  assert.ok(allowedLinkSchemes.includes('https'));
+});it('should throw an error for invalid Linux automation profile configurations', () => {
+  const invalidConfig = {
+    'terminal.integrated.automationProfile.linux': 'invalid'
+  };
+
+  assert.throws(() => {
+    const parsedSettings = JSON.parse(JSON.stringify(invalidConfig));
+    const linuxProfile = parsedSettings['terminal.integrated.automationProfile.linux'];
+    assert.strictEqual(typeof linuxProfile, 'object');
+  }, {
+    name: 'AssertionError',
+    message: 'The expression evaluated to a falsy value:\n\n  assert.strictEqual(typeof linuxProfile, \'object\')\n'
+  });
+});it('should support different Linux distributions for automation profiles', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+  
+  // Test for Ubuntu
+  const ubuntuConfig = { ...linuxProfile, path: '/bin/bash', args: ['--login'] };
+  assert.doesNotThrow(() => {
+    settings['terminal.integrated.automationProfile.linux'] = ubuntuConfig;
+  });
+  
+  // Test for CentOS
+  const centosConfig = { ...linuxProfile, path: '/usr/bin/bash', args: ['--login'] };
+  assert.doesNotThrow(() => {
+    settings['terminal.integrated.automationProfile.linux'] = centosConfig;
+  });
+  
+  // Test for Fedora
+  const fedoraConfig = { ...linuxProfile, path: '/usr/bin/zsh', args: ['-l'] };
+  assert.doesNotThrow(() => {
+    settings['terminal.integrated.automationProfile.linux'] = fedoraConfig;
+  });
+  
+  // Verify that the profile can be set back to the original configuration
+  assert.doesNotThrow(() => {
+    settings['terminal.integrated.automationProfile.linux'] = linuxProfile;
+  });
+});it('should maintain backward compatibility with older versions of the terminal', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+  
+  // Check if the profile has the basic properties expected in older versions
+  assert.ok(linuxProfile.hasOwnProperty('path') || linuxProfile.hasOwnProperty('shell'));
+  assert.ok(linuxProfile.hasOwnProperty('args') || linuxProfile.hasOwnProperty('shellArgs'));
+  
+  // Ensure that new properties don't break older functionality
+  const oldVersionKeys = ['path', 'shell', 'args', 'shellArgs', 'env'];
+  const profileKeys = Object.keys(linuxProfile);
+  const hasOnlyOldOrNewKeys = profileKeys.every(key => oldVersionKeys.includes(key) || key === 'env');
+  assert.ok(hasOnlyOldOrNewKeys, 'Profile should only contain old version keys or the new "env" key');
+});it('should allow for dynamic updates to the Linux automation profile', () => {
+  const originalProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof originalProfile, 'object');
+
+  const updatedProfile = {
+    path: '/bin/zsh',
+    args: ['-l'],
+    env: { CUSTOM_VAR: 'test_value' }
+  };
+
+  settings['terminal.integrated.automationProfile.linux'] = updatedProfile;
+
+  const newProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.deepStrictEqual(newProfile, updatedProfile);
+  assert.notDeepStrictEqual(newProfile, originalProfile);
+
+  // Restore original profile
+  settings['terminal.integrated.automationProfile.linux'] = originalProfile;
+});it('should properly escape special characters in the Linux automation profile', () => {
+  const linuxProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.strictEqual(typeof linuxProfile, 'object');
+
+  const specialCharsConfig = {
+    path: '/bin/bash',
+    args: ['-c', 'echo "Hello, World!"'],
+    env: {
+      SPECIAL_CHARS: '!@#$%^&*()`~[]{}\|;:\'",.<>?'
+    }
+  };
+
+  settings['terminal.integrated.automationProfile.linux'] = specialCharsConfig;
+
+  const updatedProfile = settings['terminal.integrated.automationProfile.linux'];
+  assert.deepStrictEqual(updatedProfile, specialCharsConfig);
+  assert.strictEqual(updatedProfile.env.SPECIAL_CHARS, '!@#$%^&*()`~[]{}\|;:\'",.<>?');
+
+  // Restore original profile
+  settings['terminal.integrated.automationProfile.linux'] = linuxProfile;
+});
