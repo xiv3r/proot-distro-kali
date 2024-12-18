@@ -1,0 +1,19 @@
+﻿Created by Infinity-Box (c) 2021
+Chinese Miracle II : MediaTek Service Module
+Device Info file   : _Android_info.txt
+
+Product Brand  : samsung
+Product Device : a03s
+Product Model  : SM-A037F
+Product Name   : a03snnxx
+Patch Level    : RP1A.200720.012
+Display ID     : RP1A.200720.012.A037FXXU1AUI7
+Build Time     : 14.09.2021
+Ver. CodeName  : REL
+Ver. Release   : 11
+Sec. Patch     : 2021-09-01
+Product Info   : a03s
+Product Board  : hs03s
+Board Platform : mt6765
+Product Manfct : samsung
+
