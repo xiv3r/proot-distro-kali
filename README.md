@@ -11,6 +11,10 @@ apt update && apt upgrade -y && pkg install wget -y && wget -qO- https://raw.git
 ```
 kali
 ```
+## Logout
+```
+exit
+```
 ## Uninstall
 ```sh
 uninstall-kali
