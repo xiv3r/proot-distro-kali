@@ -56,7 +56,7 @@ EOF
 chmod 700 "$PREFIX/bin/${FS}"
 
 # neofetch binary
-wget -O "${FS}/bin/neofetch" https://raw.githubusercontent.com/xiv3r/Termux-Pentesting-Distro/refs/heads/main/KaliLinux/Proot/neofetch
+wget -O "${FS}/bin/neofetch" https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/neofetch
 chmod 700 "${FS}/bin/neofetch"
 
 # neofetch
