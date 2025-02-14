@@ -1,0 +1,93 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Install necessary packages
+apt install axel bsdtar proot-distro proot neofetch -y
+clear
+
+# Define variables for the rootfs
+FS="kali"
+
+# Forward the value of FS to NM
+NM="$FS"
+
+# Capitalize the first letter of NM
+NM=$(echo "$NM" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+
+# Display the values of FS and NM
+echo "$FS" > /dev/null
+echo "$NM" > /dev/null
+
+# Create the directory for the Kali minimal rootfs
+mkdir -p "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
+
+# Change to the rootfs directory
+cd "$PREFIX/var/lib/proot-distro/installed-rootfs"
+
+# Display Kali Linux ASCII art
+neofetch --ascii_distro "${NM}" -L
+
+# Download the Kali minimal rootfs using axel
+axel -a -o "${FS}.tar.xz" "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
+
+# Extract the rootfs
+echo " "
+echo "[*] Extracting ${NM} linux Minimal rootfs...!!!"
+proot --link2symlink bsdtar -xpJf "${FS}.tar.xz" 2>/dev/null
+
+# Move the extracted files to the correct directory
+echo " "
+echo "Migrating..."
+mv kali-arm64/* $PREFIX/var/lib/proot-distro/installed-rootfs/${FS}
+
+# Create a proot-distro configuration file for the Kali minimal rootfs
+echo " "
+echo "Creating Proot configuration file..."
+cat > "$PREFIX/etc/proot-distro/${FS}.sh" << EOF
+DISTRO_NAME="${NM} Nethunter Minimal"
+TARBALL_URL['aarch64']="https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
+TARBALL_SHA256['aarch64']="$(sha256sum "${FS}.tar.xz" | awk '{print $1}')"
+EOF
+
+# Create a shortcut command to start Kali
+cat > "$PREFIX/bin/${FS}" << EOF
+#!/data/data/com.termux/files/usr/bin/bash
+proot-distro login ${FS}
+EOF
+chmod 700 "$PREFIX/bin/${FS}"
+
+# neofetch binary
+wget -O "${FS}/bin/neofetch" https://raw.githubusercontent.com/xiv3r/Termux-Pentesting-Distro/refs/heads/main/KaliLinux/Proot/neofetch
+chmod 700 "${FS}/bin/neofetch"
+
+# neofetch
+cat >> "${FS}/root/.zshrc" << EOF
+neofetch
+EOF
+
+# Add the Kali command to the bashrc for easy access
+cat >> "$PREFIX/etc/bash.bashrc" << EOF
+${FS}
+EOF
+
+# Add support for uninstallation
+cat > $PREFIX/bin/uninstall-${FS} << EOF
+#!/data/data/com.termux/files/usr/bin/bash
+proot-distro remove ${FS}
+sed -i 's/${FS}//g' $PREFIX/etc/bash.bashrc
+rm -rf $PREFIX/bin/uninstall-${FS}
+rm -rf $PREFIX/bin/${FS}
+rm -rf $PREFIX/var/lib/proot-distro/dlcache/${FS}.tar.xz
+EOF
+chmod 700 "$PREFIX/bin/uninstall-${FS}"
+
+# Backup tarball to cache directory
+mkdir -p "$PREFIX/var/lib/proot-distro/dlcache"
+mv "${FS}.tar.xz" "$PREFIX/var/lib/proot-distro/dlcache"
+
+# Inform the user how to login
+echo -e '\e[1;96m'
+cat << EOF 
+Installed Successfully!
+Login ${NM} Linux Type: ${FS}
+EOF
+echo -e '\e[0m'
