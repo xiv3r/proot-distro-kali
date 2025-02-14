@@ -7,6 +7,10 @@ apt update && apt upgrade -y && pkg install wget -y && wget -qO- https://raw.git
 
 <img src="https://github.com/xiv3r/proot-distro-kali/blob/main/kali.png">
 
+## Login
+```
+kali
+```
 ## Uninstall
 ```sh
 uninstall-kali
