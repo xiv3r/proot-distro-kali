@@ -1,11 +1,19 @@
-# Auto install
-```sh
-apt update && apt upgrade -y && pkg install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/install | bash && kali
+# Requirements
+- Termux
+
+# Auto Install [ARM64]
+```diff
+-; apt update && apt upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/arm64 | bash && kali
 ```
+# Auto Install [ARMHF]
+```diff
+-; apt update && apt upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/armhf | bash && kali
+```
+<br>
 
 <img src="https://github.com/xiv3r/proot-distro-kali/blob/main/kali.png">
 
-## Login
+## Login user
 ```
 kali
 ```
@@ -14,7 +22,7 @@ kali
 exit
 ```
 ## Uninstall
-```sh
+```
 uninstall-kali
 ```
 ## Reinstall
