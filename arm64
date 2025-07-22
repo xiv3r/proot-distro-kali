@@ -27,7 +27,7 @@ cd "$PREFIX/var/lib/proot-distro/installed-rootfs"
 neofetch --ascii_distro "${NM}" -L
 
 # Download the Kali minimal rootfs using axel
-axel -a -o "${FS}.tar.xz" "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
+axel -o "${FS}.tar.xz" "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
 
 # Extract the rootfs
 echo " "
