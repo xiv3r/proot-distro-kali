@@ -29,6 +29,19 @@ neofetch --ascii_distro "${NM}" -L
 # Download the Kali minimal rootfs using axel
 axel -o "${FS}.tar.xz" "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
 
+# Check file integrity 
+echo " "
+echo "[*] Checking $NM Linux File Integrity...!!!"
+echo " "
+echo "[*] MD5"
+md5sum ${FS}.tar.xz
+echo " "
+echo "[*] SHA256"
+sha256sum ${FS}.tar.xz
+echo " "
+echo "[*] SHA512"
+sha512sum ${FS}.tar.xz
+
 # Extract the rootfs
 echo " "
 echo "[*] Extracting ${NM} linux Minimal rootfs...!!!"
