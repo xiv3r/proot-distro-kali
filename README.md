@@ -3,11 +3,11 @@
 
 # Auto Install [ARM64]
 ```diff
--; apt update && apt upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/arm64 | bash && kali
+-; pkg update && pkg upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/arm64 | bash && kali
 ```
 # Auto Install [ARMHF]
 ```diff
--; apt update && apt upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/armhf | bash && kali
+-; pkg update && pkg upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/armhf | bash && kali
 ```
 <br>
 
