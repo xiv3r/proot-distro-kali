@@ -44,7 +44,7 @@ echo " "
 echo "Creating Proot configuration file..."
 cat > "$PREFIX/etc/proot-distro/${FS}.sh" << EOF
 DISTRO_NAME="${NM} Nethunter Minimal"
-TARBALL_URL['arm']="https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
+TARBALL_URL['arm']="https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-armhf.tar.xz"
 TARBALL_SHA256['arm']="$(sha256sum "${FS}.tar.xz" | awk '{print $1}')"
 EOF
 
