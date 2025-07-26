@@ -4,7 +4,7 @@
 > auto launch kali in every start-up
 > cli by default
 ```sh
--; pkg update && pkg upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/arm64 | bash && kali
+bash pkg update && pkg upgrade -y && pkg install wget -y && clear && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/arm64 | bash && kali
 ```
 ```sh
 apt update && apt install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/zsh/zsh.sh | sh && source .zshrc
