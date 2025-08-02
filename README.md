@@ -1,5 +1,7 @@
 # Requirements
-- [Termux](https://github.com/termux/termux-app/releases/download/v0.118.3/termux-app_v0.118.3+github-debug_universal.apk)
+- [Termux APP](https://github.com/termux/termux-app/releases)
+- [Termux X11](https://github.com/termux/termux-x11/releases)
+- [Termux API](https://github.com/termux/termux-api/releases)
 
 # Xfce Desktop 
 ```diff
