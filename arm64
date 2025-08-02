@@ -8,14 +8,7 @@ clear
 FS="kali"
 
 # Forward the value of FS to NM
-NM="$FS"
-
-# Capitalize the first letter of NM
-NM=$(echo "$NM" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
-
-# Display the values of FS and NM
-echo "$FS" > /dev/null
-echo "$NM" > /dev/null
+NM="kali"
 
 # Create the directory for the Kali minimal rootfs
 mkdir -p "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
@@ -24,7 +17,7 @@ mkdir -p "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
 cd "$PREFIX/var/lib/proot-distro/installed-rootfs"
 
 # Display Kali Linux ASCII art
-neofetch --ascii_distro "${NM}" -L
+neofetch --ascii_distro "${NM}"
 
 # Download the Kali minimal rootfs using axel
 axel -o "${FS}.tar.xz" "https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-minimal-arm64.tar.xz"
