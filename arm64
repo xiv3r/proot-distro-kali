@@ -41,7 +41,7 @@ proot --link2symlink bsdtar -xpJf "${FS}.tar.xz" 2>/dev/null
 # Move the extracted files to the correct directory
 echo " "
 echo "Migrating..."
-mv -f kali-arm64/* $PREFIX/var/lib/proot-distro/installed-rootfs/${FS}
+mv -f kali-arm64/* "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
 
 # Create a proot-distro configuration file for the Kali minimal rootfs
 echo " "
@@ -55,6 +55,7 @@ EOF
 # Create a shortcut command to start Kali
 cat > "$PREFIX/bin/${FS}" << EOF
 #!/data/data/com.termux/files/usr/bin/bash
+
 proot-distro login ${FS}
 EOF
 chmod 700 "$PREFIX/bin/${FS}"
@@ -77,6 +78,7 @@ EOF
 # Add support for uninstallation
 cat > $PREFIX/bin/uninstall-${FS} << EOF
 #!/data/data/com.termux/files/usr/bin/bash
+
 proot-distro remove ${FS}
 sed -i 's/${FS}//g' $PREFIX/etc/bash.bashrc
 sed -i 's/termux-wake-lock//g' $PREFIX/etc/bash.bashrc
