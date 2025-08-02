@@ -43,7 +43,7 @@ proot --link2symlink bsdtar -xpJf "${FS}.tar.xz" 2>/dev/null
 # Move the extracted files to the correct directory
 echo " "
 echo "Migrating..."
-mv kali-arm64/* $PREFIX/var/lib/proot-distro/installed-rootfs/${FS}
+mv -f kali-arm64/* $PREFIX/var/lib/proot-distro/installed-rootfs/${FS}
 
 # Create a proot-distro configuration file for the Kali minimal rootfs
 echo " "
@@ -62,7 +62,7 @@ EOF
 chmod 700 "$PREFIX/bin/${FS}"
 
 # neofetch binary
-wget -O "${FS}/bin/neofetch" "https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/neofetch"
+wget -q -O "${FS}/bin/neofetch" "https://raw.githubusercontent.com/xiv3r/proot-distro-kali/refs/heads/main/neofetch"
 chmod 700 "${FS}/bin/neofetch"
 
 # neofetch
@@ -72,6 +72,7 @@ EOF
 
 # Add the Kali command to the bashrc for easy access
 cat >> "$PREFIX/etc/bash.bashrc" << EOF
+termux-wake-lock 
 ${FS}
 EOF
 
@@ -80,6 +81,7 @@ cat > $PREFIX/bin/uninstall-${FS} << EOF
 #!/data/data/com.termux/files/usr/bin/bash
 proot-distro remove ${FS}
 sed -i 's/${FS}//g' $PREFIX/etc/bash.bashrc
+sed -i 's/termux-wake-lock//g' $PREFIX/etc/bash.bashrc
 rm -rf $PREFIX/bin/uninstall-${FS}
 rm -rf $PREFIX/bin/${FS}
 rm -rf $PREFIX/var/lib/proot-distro/dlcache/${FS}.tar.xz
@@ -88,11 +90,12 @@ chmod 700 "$PREFIX/bin/uninstall-${FS}"
 
 # Backup tarball to cache directory
 mkdir -p "$PREFIX/var/lib/proot-distro/dlcache"
-mv "${FS}.tar.xz" "$PREFIX/var/lib/proot-distro/dlcache"
+mv -f "${FS}.tar.xz" "$PREFIX/var/lib/proot-distro/dlcache"
 
 # Inform the user how to login
 echo -e '\e[1;96m'
 cat << EOF 
+
 Installed Successfully!
 Login ${NM} Linux Type: ${FS}
 EOF
