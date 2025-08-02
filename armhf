@@ -41,7 +41,7 @@ proot --link2symlink bsdtar -xpJf "${FS}.tar.xz" 2>/dev/null
 # Move the extracted files to the correct directory
 echo " "
 echo "Migrating..."
-mv -f "$HOME/kali-armhf/*" "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
+mv -f $HOME/kali-armhf/* "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
 
 # Create a proot-distro configuration file for the Kali minimal rootfs
 echo " "
