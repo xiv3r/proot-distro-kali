@@ -6,9 +6,7 @@ clear
 
 # Define variables for the rootfs
 FS="kali"
-
-# Forward the value of FS to NM
-NM="kali"
+NM="Kali"
 
 # Create the directory for the Kali minimal rootfs
 mkdir -p "$PREFIX/var/lib/proot-distro/installed-rootfs/${FS}"
