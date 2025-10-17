@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash -e
+#!/data/data/com.termux/files/usr/bin/bash
 
 # Install necessary packages
 pkg install axel bsdtar proot-distro proot neofetch -y
@@ -65,11 +65,14 @@ wget -q -O "${FS}/bin/neofetch" "https://raw.githubusercontent.com/xiv3r/proot-d
 chmod 700 "${FS}/bin/neofetch"
 
 # neofetch
+sed -i '/neofetch/d' ${FS}/root/.zshrc
 cat >> "${FS}/root/.zshrc" << EOF
 neofetch
 EOF
 
 # Add the Kali command to the bashrc for easy access
+sed -i '/${FS}/d' $PREFIX/etc/bash.bashrc
+sed -i '/termux-wake-lock/d' $PREFIX/etc/bash.bashrc
 cat >> "$PREFIX/etc/bash.bashrc" << EOF
 termux-wake-lock 
 ${FS}
@@ -80,8 +83,8 @@ cat > $PREFIX/bin/uninstall-${FS} << EOF
 #!/data/data/com.termux/files/usr/bin/bash
 
 proot-distro remove ${FS}
-sed -i 's/${FS}//g' $PREFIX/etc/bash.bashrc
-sed -i 's/termux-wake-lock//g' $PREFIX/etc/bash.bashrc
+sed -i '/${FS}/d' $PREFIX/etc/bash.bashrc
+sed -i '/termux-wake-lock/d' $PREFIX/etc/bash.bashrc
 rm -rf $PREFIX/bin/uninstall-${FS}
 rm -rf $PREFIX/bin/${FS}
 rm -rf $PREFIX/var/lib/proot-distro/dlcache/${FS}.tar.xz
